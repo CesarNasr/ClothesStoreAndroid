@@ -64,7 +64,7 @@ class RepositoryImpl
         }
     }
 
-    override suspend fun deleteBasketItemAndFetch(productId : Int) = withContext(ioDispatcher){
+    override suspend fun deleteBasketItemAndRefresh(productId : Int) = withContext(ioDispatcher){
         basketMapper.mapFromEntityList(db.BasketDao().deleteBasketEntryAndRefresh(productId))
     }
 

@@ -28,6 +28,9 @@ class BasketViewModel @Inject constructor(
     private val _basketUiState = MutableStateFlow<UiState>(UiState.Empty)
     val basketUiState: StateFlow<UiState> = _basketUiState
 
+    private val _deleteProductSuccessState = MutableStateFlow<Boolean>(false)
+    val deleteProductSuccessState: StateFlow<Boolean> = _deleteProductSuccessState
+
     private val _totalPrice = MutableStateFlow("")
     val totalPrice: StateFlow<String> = _totalPrice
 
@@ -50,7 +53,7 @@ class BasketViewModel @Inject constructor(
     fun deleteBasketProducts(productId: Int, onSuccess: (List<Product>) -> Unit) {
         viewModelScope.launch {
             try {
-                val result = repository.deleteBasketItemAndFetch(productId)
+                val result = repository.deleteBasketItemAndRefresh(productId)
                 calculateTotal(result)
                 toggleEmptyView(result.isEmpty())
 
@@ -58,7 +61,7 @@ class BasketViewModel @Inject constructor(
                     onSuccess(result)
                 }
             } catch (e: Exception) {
-                deleteBasketProducts(productId, onSuccess)
+                println(e)
             }
         }
     }

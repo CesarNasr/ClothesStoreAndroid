@@ -31,6 +31,6 @@ interface Repository {
     suspend fun fetchBasketItems(): List<Product>
     suspend fun insertBasketItem(item : Product): Long
     suspend fun getBasketCount() : Flow<Int>
-    suspend fun deleteBasketItemAndFetch(productId : Int) : List<Product>
+    suspend fun deleteBasketItemAndRefresh(productId : Int) : List<Product>
 
 }

@@ -71,8 +71,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
     implementation 'androidx.activity:activity-compose:1.5.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -82,12 +81,18 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
 
     implementation "androidx.fragment:fragment-ktx:1.5.0"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0'
+
+
+
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
     /**
      * Using navigation compose to easily navigate through screens while using compose UI
@@ -137,5 +142,29 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation "io.coil-kt:coil-compose:2.0.0-rc01"
+
+
+
+    // Local Unit Tests
+    implementation "androidx.test:core:1.4.0"
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation "com.google.truth:truth:1.0.1"
+    testImplementation "org.mockito:mockito-core:2.21.0"
+
+
+
+    // Instrumented Unit Tests
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "org.mockito:mockito-core:2.21.0"
+
 
 }
