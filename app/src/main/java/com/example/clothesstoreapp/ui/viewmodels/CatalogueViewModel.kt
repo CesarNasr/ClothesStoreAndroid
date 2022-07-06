@@ -1,6 +1,7 @@
 package com.example.clothesstoreapp.ui.viewmodels
 
 import android.content.Context
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.clothesstoreapp.R
@@ -29,6 +30,11 @@ class CatalogueViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Empty)
     val uiState: StateFlow<UiState> = _uiState
 
+
+    private val _updateListView = MutableStateFlow<List<Product>>(listOf())
+    val updateListView: StateFlow<List<Product>> = _updateListView
+
+
     init {
         fetchProducts()
     }
@@ -40,7 +46,8 @@ class CatalogueViewModel @Inject constructor(
                 when (val response = repository.fetchProducts()) {
                     is Resource.Success -> {
                         response.data?.let {
-                            _uiState.value  = UiState.Loaded(data = it.products as MutableList<Product>)
+                            _uiState.value =
+                                UiState.Loaded(data = it.products as MutableList<Product>)
                         }
                     }
                     is Resource.Error -> {
@@ -68,7 +75,22 @@ class CatalogueViewModel @Inject constructor(
         _uiState.value = UiState.Error(message = errorMessage)
     }
 
-    fun onRefreshClicked(){
+
+    fun filterList(query: String?) {
+        val currentData = (_uiState.value as? UiState.Loaded)?.data
+
+        if (query != null) {
+            val filteredList =
+                currentData?.filter { item -> item.name.lowercase().contains(query.lowercase()) }
+                    ?.toList() ?: listOf()
+            _updateListView.value = filteredList
+        } else {
+            _updateListView.value = currentData ?: listOf()
+        }
+
+    }
+
+    fun onRefreshClicked() {
         fetchProducts()
     }
 

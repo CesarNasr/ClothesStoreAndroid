@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.ClothesStoreApp" parent="Theme.MaterialComponents.NoActionBar"/>
+    <style name="Theme.ClothesStoreApp" parent="Theme.MaterialComponents.NoActionBar">
+
+<!--        <item name="android:textColorHint">@android:color/darker_gray</item>-->
+<!--        <item name="android:hint">@android:color/darker_gray</item>-->
+<!--        <item name="android:queryHint">@android:color/darker_gray</item>-->
+<!--        <item name="android:searchHintIcon">@android:color/darker_gray</item>-->
+<!--        <item name="android:editTextColor">@android:color/darker_gray</item>-->
+
+    </style>
 </resources>
