@@ -76,13 +76,13 @@ class CatalogueViewModel @Inject constructor(
     }
 
 
+    //Note: As a better practice, Filtering logic should have been placed on repository level with an endpoint that supports search queries
     fun filterList(query: String?) {
         val currentData = (_uiState.value as? UiState.Loaded)?.data
 
         if (query != null) {
             val filteredList =
-                currentData?.filter { item -> item.name.lowercase().contains(query.lowercase()) }
-                    ?.toList() ?: listOf()
+                currentData?.filter { item -> item.name.lowercase().contains(query.lowercase()) }?.toList() ?: listOf()
             _updateListView.value = filteredList
         } else {
             _updateListView.value = currentData ?: listOf()
