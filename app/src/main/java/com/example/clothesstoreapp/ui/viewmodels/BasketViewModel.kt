@@ -28,9 +28,6 @@ class BasketViewModel @Inject constructor(
     private val _basketUiState = MutableStateFlow<UiState>(UiState.Empty)
     val basketUiState: StateFlow<UiState> = _basketUiState
 
-    private val _deleteProductSuccessState = MutableStateFlow<Boolean>(false)
-    val deleteProductSuccessState: StateFlow<Boolean> = _deleteProductSuccessState
-
     private val _totalPrice = MutableStateFlow("")
     val totalPrice: StateFlow<String> = _totalPrice
 

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun collectUiStates(wishListBadge: BadgeDrawable, basketBadge: BadgeDrawable) {
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 launch {
                     mainViewModel.wishListCount.collect {

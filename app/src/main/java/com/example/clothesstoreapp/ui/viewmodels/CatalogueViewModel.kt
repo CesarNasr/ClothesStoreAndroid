@@ -11,6 +11,7 @@ import com.example.clothesstoreapp.domain.repository.Repository
 import com.example.clothesstoreapp.ui.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -79,19 +80,22 @@ class CatalogueViewModel @Inject constructor(
     //Note: As a better practice, Filtering logic should have been placed on repository level with an endpoint that supports search queries
     fun filterList(query: String?) {
         val currentData = (_uiState.value as? UiState.Loaded)?.data
+        _updateListView.value = (_uiState.value as? UiState.Loaded)?.data ?: listOf()
 
-        if (query != null) {
-            val filteredList =
-                currentData?.filter { item -> item.name.lowercase().contains(query.lowercase()) }?.toList() ?: listOf()
-            _updateListView.value = filteredList
-        } else {
-            _updateListView.value = currentData ?: listOf()
+        viewModelScope.launch {
+            if (query != null) {
+                val filteredList: List<Product> = currentData?.filter { item ->
+                        item.name.lowercase().contains(query.lowercase())
+                    }?.toList() ?: listOf()
+
+                _updateListView.value = (filteredList)
+            } else {
+                _updateListView.value = currentData ?: listOf()
+            }
         }
-
     }
 
     fun onRefreshClicked() {
         fetchProducts()
     }
-
 }

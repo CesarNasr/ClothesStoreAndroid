@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -61,9 +62,12 @@ class BasketFragment : Fragment() {
 
 
     private fun collectUiStates() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.basketUiState.collect {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.basketUiState.flowWithLifecycle(
+                viewLifecycleOwner.lifecycle,
+                Lifecycle.State.STARTED
+            )
+                .collect {
                     if (it is UiState.Loaded) {
                         if (it.data.isNullOrEmpty()) {
                             // show empty error if needed
@@ -74,9 +78,6 @@ class BasketFragment : Fragment() {
                         // show error if needed
                     }
                 }
-
-            }
-
         }
     }
 

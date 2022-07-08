@@ -60,8 +60,8 @@ class WishlistFragment : Fragment() {
 
 
     private fun collectUiStates() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 
                 launch {
 
@@ -84,9 +84,7 @@ class WishlistFragment : Fragment() {
                 launch {
                     viewModel.fetchWishListUiState.collect {
                         if (it is UiState.Loaded) {
-                            if (it.data.isNullOrEmpty()) {
-
-                            } else {
+                            if (it.data?.isNotEmpty() == true) {
                                 wishListAdapter.setList(it.data as MutableList<Product>)
                             }
                         } else {
@@ -112,7 +110,11 @@ class WishlistFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-            Toast.makeText(requireContext(),  resources.getString(R.string.item_deleted), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                resources.getString(R.string.item_deleted),
+                Toast.LENGTH_SHORT
+            ).show()
             //Remove swiped item from DB and notify the RecyclerView on Success
             val position = viewHolder.adapterPosition
             viewModel.removeItemFromWishlist(wishListAdapter.getList()[position]) {

@@ -54,15 +54,22 @@ class CatalogueFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        collectUiStates()
         setSearchView()
+        collectUiStates()
     }
 
     private fun collectUiStates() {
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.updateListView.collect { data ->
+                        catalogueAdapter.setList(data.toMutableList())
+                    }
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
 
                     viewModel.uiState.collect { uiState ->
@@ -80,11 +87,7 @@ class CatalogueFragment : Fragment() {
                         }
                     }
                 }
-                launch {
-                    viewModel.updateListView.collect { data ->
-                        catalogueAdapter.setList(data.toMutableList())
-                    }
-                }
+
             }
 
         }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.clothesstoreapp.R
@@ -67,31 +68,35 @@ class ProductBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun collectUiStates() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.onItemInserted.collect {
-                    if(it is UiState.Loaded){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.onItemInserted.flowWithLifecycle(
+                viewLifecycleOwner.lifecycle,
+                Lifecycle.State.STARTED
+            )
+                .collect {
+                    if (it is UiState.Loaded) {
                         this@ProductBottomSheet.dismiss()
                     }
                 }
-            }
         }
     }
 
-
-    private lateinit var dialog : BottomSheetDialog
+    private lateinit var dialog: BottomSheetDialog
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         return dialog
     }
+
     //set the behavior here
-    private fun setFullScreen(){
+    private fun setFullScreen() {
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
+
     override fun onStart() {
         super.onStart()
         setFullScreen()//initiated at onActivityCreated(), onStart()
     }
+
     companion object {
         val TAG = "ProductBottomSheet"
 
